@@ -1,0 +1,24 @@
+// games collection
+{
+  "_id" : ObjectId,
+  "title" : String,
+  "developer" : String,
+  "publisher" : String,
+  "installationPath" : String,
+  "platform" : String (e.g. Steam, GOG, etc.),
+  "configurations" : [
+    {
+      "_id" : ObjectId,
+      "type" : String (e.g. graphics, controller, etc.),
+      "settings" : Object
+    }
+  ]
+}
+
+// game_saves collection (optional)
+{
+  "_id" : ObjectId,
+  "gameId" : ObjectId (reference to the games collection),
+  "saveDate" : Date,
+  "saveData" : Object
+}
