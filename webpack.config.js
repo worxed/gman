@@ -1,5 +1,5 @@
 module.exports = {
-  // ... other configurations ...
+  // ... other config options ...
   resolve: {
     fallback: {
       buffer: require.resolve('buffer/'),
@@ -11,6 +11,7 @@ module.exports = {
       url: require.resolve('url/'),
       util: require.resolve('util/'),
       http: require.resolve('stream-http'),
+      fs: require.resolve('browserify-fs'),
     },
   },
 };

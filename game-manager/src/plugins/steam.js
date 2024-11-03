@@ -1,12 +1,32 @@
-const SteamAPI = require('steam-api');
-const steamApi = new SteamAPI({
-  apiKey: 'YOUR_STEAM_API_KEY',
-});
+// steam.js
+const axios = require('axios').default;
+const fs = require('fs');
+const path = require('path');
+const getSteamId = async () => {
+  const steamConfigDir = process.platform === 'win32'
+    ? 'C:\\Program Files (x86)\\Steam\\config'
+    : process.platform === 'darwin'
+      ? '~/Library/Application Support/Steam/config'
+      : '~/.steam/config';
+
+  const steamCfgFile = path.join(steamConfigDir, 'steam.cfg');
+  const steamCfgContent = await fs.promises.readFile(steamCfgFile, 'utf8');
+  const steamIdMatch = steamCfgContent.match(/"SteamID"\s*"(\d+)"/);
+
+  if (steamIdMatch) {
+    return steamIdMatch[1];
+  } else {
+    throw new Error('Failed to extract Steam ID from steam.cfg file');
+  }
+};
 
 const getSteamGames = async () => {
-  const games = await steamApi.getGames({
-    include: ['name', 'appid', 'img_icon_url', 'img_logo_url'],
-  });
+  const steamId = await getSteamId();
+  const apiKey = 'your_api_key';
+  const url = `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${apiKey}&steamid=${steamId}&format=json`;
+
+  const response = await axios.get(url);
+  const games = response.data.response.games;
 
   return games.map((game) => ({
     title: game.name,

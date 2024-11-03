@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { getGames } from './api/games';
+import 'node-polyfill';
+const punycode = require('punycode');
+import { act } from 'react';
+import axios from 'axios';
+
 
 function App() {
   const [games, setGames] = useState([]);
