@@ -10,4 +10,4 @@ router.get('/', async (req, res) => {
 });
 
 export { getGames }; // Add this line to export the getGames function
-export default router;
+export default router

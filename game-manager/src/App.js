@@ -8,6 +8,7 @@ function App() {
   useEffect(() => {
     const fetchGames = async () => {
       const fetchedGames = await getGames();
+      console.log(fetchedGames); // Log the fetched data to the console
       setGames(fetchedGames);
     };
     fetchGames();
