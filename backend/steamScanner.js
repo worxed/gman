@@ -72,7 +72,11 @@ const getSteamGameDetails = async (appId) => {
     console.log(`Details for appId ${appId}:`, response.data[appId].data); // Add logging here
     return response.data[appId].data;
   } catch (error) {
-    console.error(`Error fetching details for appId ${appId}:`, error);
+    if (error.response && error.response.status === 403) {
+      console.error(`Access denied for appId ${appId}:`, error.response.data);
+    } else {
+      console.error(`Error fetching details for appId ${appId}:`, error);
+    }
     return null;
   }
 };
@@ -85,10 +89,16 @@ const scanSteamGames = async (steamApiKey, steamUserId) => {
 
   console.log('Owned games:', ownedGames); // Add logging here
 
-  for (const ownedGame of ownedGames) {
+  const gamePromises = ownedGames.map(async (ownedGame) => {
     const installedGame = installedGames.find(g => g.appid === ownedGame.appid);
     const details = await getSteamGameDetails(ownedGame.appid);
     if (details) {
+      const existingGame = await Game.findOne({ name: details.name });
+      if (existingGame) {
+        console.log(`Game already exists in DB: ${details.name}`);
+        return; // Skip adding the game if it already exists
+      }
+
       const gameData = {
         name: details.name,
         path: installedGame ? installedGame.path : 'Not Installed', // Provide default value for path
@@ -97,6 +107,12 @@ const scanSteamGames = async (steamApiKey, steamUserId) => {
           developers: Array.isArray(details.developers) ? details.developers.join(', ') : details.developers,
           publishers: Array.isArray(details.publishers) ? details.publishers.join(', ') : details.publishers,
           release_date: details.release_date.date,
+          icon_url: `https://cdn.cloudflare.steamstatic.com/steam/apps/${ownedGame.appid}/${details.header_image.split('/').pop()}`, // Add icon URL
+          genres: details.genres ? details.genres.map(genre => genre.description).join(', ') : '',
+          platforms: details.platforms ? Object.keys(details.platforms).join(', ') : '',
+          price: details.price_overview ? details.price_overview.final_formatted : 'Free',
+          metacritic_score: details.metacritic ? details.metacritic.score : 'N/A', // Add Metacritic score
+          steam_score: details.recommendations ? details.recommendations.total : 'N/A', // Add Steam score
         }
       };
 
@@ -108,10 +124,58 @@ const scanSteamGames = async (steamApiKey, steamUserId) => {
         console.error(`Error adding game to DB: ${details.name}`, error);
       }
     }
-    await delay(1000); // Add delay between requests to avoid rate limiting
-  }
+    await delay(1000);
+  });
+
+  await Promise.all(gamePromises); // Wait for all promises to complete
 
   console.log('Finished scanning Steam games');
 };
 
-module.exports = { scanSteamGames };
+const updateSteamGames = async (steamApiKey, steamUserId) => {
+  const games = await Game.find();
+  console.log('Existing games:', games); // Add logging here
+
+  const updatePromises = games.map(async (game) => {
+    const details = await getSteamGameDetails(game.appid);
+    if (details) {
+      console.log(`Updating game: ${game.name}`); // Add logging here
+      game.metadata.description = details.short_description;
+      game.metadata.developers = Array.isArray(details.developers) ? details.developers.join(', ') : details.developers;
+      game.metadata.publishers = Array.isArray(details.publishers) ? details.publishers.join(', ') : details.publishers;
+      game.metadata.release_date = details.release_date.date;
+      game.metadata.icon_url = `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/${details.header_image.split('/').pop()}`; // Add icon URL
+      game.metadata.genres = details.genres ? details.genres.map(genre => genre.description).join(', ') : '';
+      game.metadata.platforms = details.platforms ? Object.keys(details.platforms).join(', ') : '';
+      game.metadata.price = details.price_overview ? details.price_overview.final_formatted : 'Free';
+      game.metadata.metacritic_score = details.metacritic ? details.metacritic.score : 'N/A'; // Add Metacritic score
+      game.metadata.steam_score = details.recommendations ? details.recommendations.total : 'N/A'; // Add Steam score
+
+      // Update the game data in MongoDB
+      try {
+        await game.save();
+        console.log(`Game updated in DB: ${game.name}`);
+      } catch (error) {
+        console.error(`Error updating game in DB: ${game.name}`, error);
+      }
+    } else {
+      console.log(`No details found for game: ${game.name}`); // Add logging here
+    }
+    await delay(1000); // Add delay between requests to avoid rate limiting
+  });
+
+  await Promise.all(updatePromises); // Wait for all promises to complete
+
+  console.log('Finished updating Steam games');
+};
+
+const clearDatabase = async () => {
+  try {
+    await Game.deleteMany({});
+    console.log('Database cleared');
+  } catch (error) {
+    console.error('Error clearing database:', error);
+  }
+};
+
+module.exports = { scanSteamGames, updateSteamGames, clearDatabase };

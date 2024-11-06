@@ -1,13 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import OptionsModal from './OptionsModal'; // Import the OptionsModal component
+import BurgerMenu from './BurgerMenu'; // Import the BurgerMenu component
 
 const ScanSteamGames = () => {
-  const [steamApiKey, setSteamApiKey] = useState('');
-  const [steamUserId, setSteamUserId] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [message, setMessage] = useState('');
+  const [steamApiKey, setSteamApiKey] = useState(''); // Define state for Steam API key
+  const [steamUserId, setSteamUserId] = useState(''); // Define state for Steam user ID
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Define state for menu open
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    // Fetch the saved configuration when the component mounts
+    const fetchConfig = async () => {
+      try {
+        const response = await axios.get('/get-config');
+        if (response.data) {
+          setSteamApiKey(response.data.steamApiKey);
+          setSteamUserId(response.data.steamUserId);
+        }
+      } catch (error) {
+        console.error('Error fetching configuration:', error);
+      }
+    };
+
+    fetchConfig();
+  }, []);
+
+  const handleSaveConfig = async (steamApiKey, steamUserId) => {
+    try {
+      const response = await axios.post('/save-config', { steamApiKey, steamUserId });
+      setMessage(response.data.message);
+    } catch (error) {
+      setMessage('Failed to save configuration');
+      console.error(error);
+    }
+  };
+
+  const handleScanGames = async () => {
     try {
       const response = await axios.post('/scan-steam-games', { steamApiKey, steamUserId });
       setMessage(response.data.message);
@@ -17,30 +47,46 @@ const ScanSteamGames = () => {
     }
   };
 
+  const handleUpdateGames = async () => {
+    try {
+      const response = await axios.post('/update-steam-games', { steamApiKey, steamUserId });
+      setMessage(response.data.message);
+    } catch (error) {
+      setMessage('Failed to update Steam games');
+      console.error(error);
+    }
+  };
+
+  const handleClearDatabase = async () => {
+    try {
+      const response = await axios.post('/clear-database');
+      setMessage(response.data.message);
+    } catch (error) {
+      setMessage('Failed to clear database');
+      console.error(error);
+    }
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
-    <div>
-      <h2>Scan Steam Games</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Steam API Key:</label>
-          <input
-            type="text"
-            value={steamApiKey}
-            onChange={(e) => setSteamApiKey(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Steam User ID (numeric):</label>
-          <input
-            type="text"
-            value={steamUserId}
-            onChange={(e) => setSteamUserId(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Scan</button>
-      </form>
+    <div className={`main-content ${isMenuOpen ? 'shifted' : ''}`}>
+      <BurgerMenu
+        onOpenOptions={() => setIsModalOpen(true)}
+        onScanGames={handleScanGames}
+        onUpdateGames={handleUpdateGames}
+        onClearDatabase={handleClearDatabase}
+        toggleMenu={toggleMenu}
+      />
+      <OptionsModal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        onSaveConfig={handleSaveConfig}
+        steamApiKey={steamApiKey}
+        steamUserId={steamUserId}
+      />
       {message && <p>{message}</p>}
     </div>
   );
