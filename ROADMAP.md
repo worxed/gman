@@ -62,6 +62,7 @@ Running the Application:
 Start MongoDB server: mongod
 Start backend server: cd backend && node server.js
 Start React frontend: cd frontend && npm start
+
 6. Summary
 Backend is set up with Express.js and MongoDB.
 Frontend is set up with React.
