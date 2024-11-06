@@ -1,2 +1,2 @@
 # gman
-games management
+games management system based on REACT and Mongo
