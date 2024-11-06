@@ -4,23 +4,39 @@ The Game Manager project is a system based on React and MongoDB. It scans throug
 
 ## Project Structure
 
--gman/
--├── backend/
--│   ├── server.js
--│   ├── routes/
--│   │   └── games.js
--│   └── models/
--│       └── game.model.js
--├── frontend/
--│   ├── public/
--│   ├── src/
--│   │   ├── App.js
--│   │   ├── GameList.js
--│   │   ├── GameItem.js
--│   │   └── index.js
--│   └── package.json
--├── README.md
--└── package.json
+gman/
+
+├── backend/
+
+│   ├── server.js
+
+│   ├── routes/
+
+│   │   └── games.js
+
+│   └── models/
+
+│       └── game.model.js
+
+├── frontend/
+
+│   ├── public/
+
+│   ├── src/
+
+│   │   ├── App.js
+
+│   │   ├── GameList.js
+
+│   │   ├── GameItem.js
+
+│   │   └── index.js
+
+│   └── package.json
+
+├── README.md
+
+└── package.json
 
 ## Summary
 
