@@ -1,20 +1,18 @@
+/* Common styles */
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  background: linear-gradient(135deg, #0d1b2a, #1b263b); /* Gradient from dark navy blue to dark slate blue */
+  color: #ffffff; /* White Text */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.5s ease-in-out;
 }
 
 .App-header {
-  background-color: #282c34;
+  background: linear-gradient(135deg, #0d1b2a, #1b263b); /* Gradient from dark navy blue to dark slate blue */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -22,17 +20,172 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  transition: background 0.5s ease-in-out;
 }
 
-.App-link {
-  color: #61dafb;
+h1 {
+  color: #8a2be2; /* Light Purple */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  animation: glow 1.5s infinite alternate;
 }
 
-@keyframes App-logo-spin {
+@keyframes glow {
   from {
-    transform: rotate(0deg);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 10px #8a2be2, 0 0 20px #8a2be2, 0 0 30px #8a2be2;
   }
   to {
-    transform: rotate(360deg);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 20px #8a2be2, 0 0 30px #8a2be2, 0 0 40px #8a2be2;
   }
+}
+
+button {
+  background: linear-gradient(135deg, #0077b6, #8a2be2); /* Gradient from medium blue to light purple */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #005f99, #7a1fa2); /* Darker gradient */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #0077b6; /* Medium Blue Border */
+  border-radius: 5px;
+  margin: 10px;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+  border-color: #8a2be2; /* Light Purple */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+label {
+  color: #8a2be2; /* Light Purple */
+}
+
+.game-list {
+  margin-top: 20px;
+}
+
+.game-icon {
+  background-color: #282c34;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.game-icon:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.sort-label {
+  background-color: rgba(138, 43, 226, 0.7); /* Semi-transparent Light Purple */
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  z-index: 2;
+}
+
+/* Light theme */
+.light-theme {
+  background: linear-gradient(135deg, #f0f0f0, #dcdcdc); /* Gradient from light gray to darker gray */
+  color: #000000; /* Black Text */
+}
+
+.light-theme .App-header {
+  background: linear-gradient(135deg, #f0f0f0, #dcdcdc); /* Gradient from light gray to darker gray */
+  color: black;
+}
+
+.light-theme h1 {
+  color: #4b0082; /* Indigo */
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+  animation: glow-light 1.5s infinite alternate;
+}
+
+@keyframes glow-light {
+  from {
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5), 0 0 10px #4b0082, 0 0 20px #4b0082, 0 0 30px #4b0082;
+  }
+  to {
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5), 0 0 20px #4b0082, 0 0 30px #4b0082, 0 0 40px #4b0082;
+  }
+}
+
+.light-theme button {
+  background: linear-gradient(135deg, #87cefa, #dda0dd); /* Gradient from light blue to plum */
+  color: black;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.light-theme button:hover {
+  background: linear-gradient(135deg, #4682b4, #ba55d3); /* Darker gradient */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.light-theme input {
+  padding: 10px;
+  border: 1px solid #87cefa; /* Light Blue Border */
+  border-radius: 5px;
+  margin: 10px;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.light-theme input:focus {
+  border-color: #ba55d3; /* Plum */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.light-theme label {
+  color: #4b0082; /* Indigo */
+}
+
+.light-theme .game-icon {
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  color: black;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.light-theme .game-icon:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.light-theme .sort-label {
+  background-color: rgba(75, 0, 130, 0.7); /* Semi-transparent Indigo */
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  z-index: 2;
 }
