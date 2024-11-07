@@ -102,6 +102,6 @@ app.post('/clear-database', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port: ${port}`);
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server is running on http://0.0.0.0:${port}`);
 });

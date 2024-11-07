@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './GameList.css'; // Ensure the CSS file is imported
+import './GameList.css';
 
 const GameList = () => {
   const [games, setGames] = useState([]);
   const [sortCriteria, setSortCriteria] = useState('name');
-  const [sortOrder, setSortOrder] = useState('asc'); // Add state for sort order
+  const [sortOrder, setSortOrder] = useState('asc');
 
   useEffect(() => {
     axios.get('/games/')

@@ -35,6 +35,63 @@
   text-align: center;
   width: 300px; /* Set a fixed width for the game icon container */
   height: 200px; /* Set a fixed height for the game icon container */
+  background: rgba(40, 44, 52, 0.8); /* Glass effect background */
+  border-radius: 10px;
+  padding: 10px;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  animation: fadeIn 0.5s ease-in-out;
+  backdrop-filter: blur(10px); /* Glass effect */
+  border: 2px solid transparent; /* Initial border */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes borderCycle {
+  0% {
+    border-color: #ff0000; /* Red */
+  }
+  12.5% {
+    border-color: #ff7f00; /* Orange */
+  }
+  25% {
+    border-color: #ffff00; /* Yellow */
+  }
+  37.5% {
+    border-color: #00ff00; /* Green */
+  }
+  50% {
+    border-color: #0000ff; /* Blue */
+  }
+  62.5% {
+    border-color: #4b0082; /* Indigo */
+  }
+  75% {
+    border-color: #9400d3; /* Violet */
+  }
+  87.5% {
+    border-color: #ff00ff; /* Magenta */
+  }
+  100% {
+    border-color: #ff0000; /* Red */
+  }
+}
+
+.game-icon:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  border: 2px solid; /* Show border on hover */
+  animation: borderCycle 2s linear infinite; /* Animate border colors */
 }
 
 .game-icon img {
@@ -47,7 +104,7 @@
 .game-icon p {
   margin-top: 5px;
   font-size: 14px;
-  width: 100%; /* Ensure the text does not exceed the width of the icon */
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -58,7 +115,7 @@
   position: absolute;
   top: 5px; /* Position at the top */
   left: 5px; /* Position at the left */
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(138, 43, 226, 0.7); /* Semi-transparent Light Purple */
   color: #fff;
   padding: 5px 10px; /* Increase padding for better visibility */
   border-radius: 5px; /* Increase border radius for better visibility */
@@ -86,7 +143,8 @@
   padding: 10px;
   z-index: 1;
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition-delay: 0s; /* Remove delay for hiding */
 }
 
 /* Tooltip arrow */
@@ -105,4 +163,19 @@
 .game-icon:hover .tooltip {
   visibility: visible;
   opacity: 1;
+  transition-delay: 2s; /* Add delay for tooltip appearance */
+}
+
+/* Reset the game icon state when not hovering */
+.game-icon:not(:hover) {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-color: transparent;
+  animation: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Add animation for sorting */
+.game-icon.sorting {
+  animation: fadeIn 0.5s ease-in-out;
 }

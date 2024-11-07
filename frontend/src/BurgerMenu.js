@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './BurgerMenu.css'; // Ensure the CSS file is imported
 
-const BurgerMenu = ({ onOpenOptions, onScanGames, onUpdateGames, onClearDatabase }) => {
+const BurgerMenu = ({ onOpenOptions, onScanGames, onUpdateGames, onClearDatabase, toggleTheme, theme }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggleMenu = () => {
@@ -18,11 +18,13 @@ const BurgerMenu = ({ onOpenOptions, onScanGames, onUpdateGames, onClearDatabase
         </div>
       </div>
       <div className={`menu-content ${isOpen ? 'open' : ''}`}>
-        <button className="close-button" onClick={handleToggleMenu}>×</button>
         <button onClick={onOpenOptions}>Open Options</button>
         <button onClick={onScanGames}>Scan Games</button>
         <button onClick={onUpdateGames}>Update Games</button>
         <button onClick={onClearDatabase}>Clear Database</button>
+        <button onClick={toggleTheme}>
+          Switch to {theme === 'dark-theme' ? 'Light' : 'Dark'} Theme
+        </button>
       </div>
     </div>
   );
