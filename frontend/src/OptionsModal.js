@@ -4,7 +4,7 @@ import './OptionsModal.css'; // Ensure the CSS file is imported
 
 Modal.setAppElement('#root'); // Set the root element for accessibility
 
-const OptionsModal = ({ isOpen, onRequestClose, onSaveConfig, onScanGames, onUpdateGames, onClearDatabase, steamApiKey, steamUserId }) => {
+const OptionsModal = ({ isOpen, onRequestClose, onSaveConfig, steamApiKey, steamUserId }) => {
   const [localSteamApiKey, setLocalSteamApiKey] = useState(steamApiKey);
   const [localSteamUserId, setLocalSteamUserId] = useState(steamUserId);
 
@@ -40,12 +40,8 @@ const OptionsModal = ({ isOpen, onRequestClose, onSaveConfig, onScanGames, onUpd
             required
           />
         </div>
-        <button type="submit">Save Configuration</button>
+        <button type="submit">Save</button>
       </form>
-      <button onClick={onScanGames}>Scan Games</button>
-      <button onClick={onUpdateGames}>Update Games</button>
-      <button onClick={onClearDatabase}>Clear Database</button>
-      <button onClick={onRequestClose}>Close</button>
     </Modal>
   );
 };

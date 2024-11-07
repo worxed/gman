@@ -3,11 +3,15 @@ import './App.css';
 import GameList from './GameList';
 import ScanSteamGames from './ScanSteamGames';
 import BurgerMenu from './BurgerMenu'; // Import the BurgerMenu component
+import OptionsModal from './OptionsModal'; // Import the OptionsModal component
+import MessageOverlay from './MessageOverlay'; // Import the MessageOverlay component
 
 function App() {
   const [theme, setTheme] = useState('dark-theme');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [message, setMessage] = useState('');
+  const [steamApiKey, setSteamApiKey] = useState('');
+  const [steamUserId, setSteamUserId] = useState('');
 
   useEffect(() => {
     const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -16,6 +20,13 @@ function App() {
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === 'dark-theme' ? 'light-theme' : 'dark-theme'));
+  };
+
+  const handleSaveConfig = (apiKey, userId) => {
+    setSteamApiKey(apiKey);
+    setSteamUserId(userId);
+    setMessage('Configuration saved');
+    setIsModalOpen(false);
   };
 
   const handleScanGames = async () => {
@@ -33,6 +44,10 @@ function App() {
     setMessage('Clearing database...');
   };
 
+  const closeMessageOverlay = () => {
+    setMessage('');
+  };
+
   return (
     <div className={`App ${theme}`}>
       <header className="App-header">
@@ -47,7 +62,14 @@ function App() {
         />
         <ScanSteamGames />
         <GameList />
-        {message && <p>{message}</p>}
+        <OptionsModal
+          isOpen={isModalOpen}
+          onRequestClose={() => setIsModalOpen(false)}
+          onSaveConfig={handleSaveConfig}
+          steamApiKey={steamApiKey}
+          steamUserId={steamUserId}
+        />
+        <MessageOverlay message={message} onClose={closeMessageOverlay} />
       </header>
     </div>
   );

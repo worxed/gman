@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './GameList.css';
 
@@ -78,6 +78,8 @@ const GameList = () => {
           <div key={game._id} className="game-icon">
             <img src={game.metadata.icon_url} alt={game.name} />
             <p>{game.name}</p>
+            <p>{game.metadata.installed ? 'Installed' : 'Not Installed'}</p>
+            <p>{game.metadata.launch_command}</p>
             <div className="tooltip">
               <p><strong>Description:</strong> {game.metadata.description}</p>
               <p><strong>Developers:</strong> {game.metadata.developers}</p>

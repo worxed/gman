@@ -57,6 +57,17 @@ app.get('/get-config', async (req, res) => {
   }
 });
 
+// Endpoint to get game count
+app.get('/games/count', async (req, res) => {
+  try {
+    const count = await Game.countDocuments();
+    res.json({ count });
+  } catch (error) {
+    console.error('Error retrieving game count:', error);
+    res.status(500).json({ error: 'Failed to retrieve game count' });
+  }
+});
+
 // Endpoint to scan for Steam games
 app.post('/scan-steam-games', async (req, res) => {
   const { steamApiKey, steamUserId } = req.body;
@@ -102,6 +113,21 @@ app.post('/clear-database', async (req, res) => {
   }
 });
 
+// Function to print game count every 5 seconds
+const printGameCount = async () => {
+  try {
+    const count = await Game.countDocuments();
+    console.log(`Current game count: ${count}`);
+  } catch (error) {
+    console.error('Error retrieving game count:', error);
+  }
+};
+
+// Print game count every 5 seconds
+setInterval(printGameCount, 5000);
+
 app.listen(port, '0.0.0.0', () => {
   console.log(`Server is running on http://0.0.0.0:${port}`);
+  // Initial game count print
+  printGameCount();
 });
